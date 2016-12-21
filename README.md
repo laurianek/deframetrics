@@ -7,9 +7,13 @@ This project is a skeleton ES6 project using JSPM.  It contains a sensible proje
 
 Usage
 -----
-Clone the repository, change the required fields within package.json and then change the git repository with:
+Clone the repository, change the required fields within package.json and then either change the git repository with:
 ```bash
 $ git remote set-url origin git@github.com:USERNAME/REPOSITORY.git
+```
+or simply remove it with
+```bash
+$ rm -Rf .git
 ```
 
 You will need to install all of the Node and JSPM dependencies before doing anything else by running:
