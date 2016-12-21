@@ -1,0 +1,41 @@
+{
+  "name": "project-name-here",
+  "version": "0.1.0",
+  "description": "Project description here",
+  "main": "public/js/main.js",
+  "scripts": {
+    "start": "http-server -p 8086 -c0",
+    "postinstall": "jspm install --yes",
+    "bundle": "jspm bundle js/main public/js/main.bundle.js --inject --minify",
+    "build": "jspm bundle-sfx js/main dist/bundle.min.js --skip-source-maps --minify",
+    "clean": "rm -Rf dist/ public/js/main.bundle.js && rm public/config.js && jspm install --yes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git-repo-here"
+  },
+  "keywords": [
+    "fob",
+    "lock",
+    "legend"
+  ],
+  "author": "Guy Griffiths",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.9.0",
+    "jspm": "^0.16.48"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "public"
+    },
+    "dependencies": {
+      "jquery": "npm:jquery@^3.1.1"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
+}

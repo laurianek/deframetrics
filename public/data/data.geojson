@@ -1,0 +1,70 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.95325, 51.44234]
+            },
+            "properties": {
+                "type": "Building",
+                "cost": "Cheap"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.95035, 51.44123]
+            },
+            "properties": {
+                "type": "Grass",
+                "cost": "Expensive"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.940393, 51.444081]
+            },
+            "properties": {
+                "type": "Water",
+                "cost": "Cheap"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.949030, 51.446064]
+            },
+            "properties": {
+                "type": "Building",
+                "cost": "Expensive"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.937850, 51.441643]
+            },
+            "properties": {
+                "type": "Grass",
+                "cost": "Cheap"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.934203, 51.439824]
+            },
+            "properties": {
+                "type": "Building",
+                "cost": "Cheap"
+            }
+        }]
+}
