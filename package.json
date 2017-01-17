@@ -27,7 +27,11 @@
   },
   "jspm": {
     "directories": {
-      "baseURL": "public"
+      "baseURL": "public",
+      "packages": "public/lib"
+    },
+    "dependencies": {
+      "d3": "npm:d3@^4.4.1"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",
