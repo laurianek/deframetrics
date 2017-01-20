@@ -8,16 +8,13 @@
     "postinstall": "jspm install --yes",
     "bundle": "jspm bundle js/main public/js/main.bundle.js --inject --minify",
     "build": "jspm bundle-sfx js/main dist/bundle.min.js --skip-source-maps --minify",
-    "clean": "rm -Rf dist/ public/js/main.bundle.js && rm public/config.js && jspm install --yes"
+    "clean": "rm -Rf dist/ public/js/main.bundle.js public/js/main.bundle.js.map public/config.js && jspm install --yes"
   },
   "repository": {
     "type": "git",
     "url": "git-repo-here"
   },
   "keywords": [
-    "fob",
-    "lock",
-    "legend"
   ],
   "author": "Guy Griffiths",
   "license": "ISC",
