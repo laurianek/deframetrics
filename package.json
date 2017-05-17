@@ -1,7 +1,7 @@
 {
-  "name": "project-name-here",
+  "name": "defra-charts",
   "version": "0.1.0",
-  "description": "Project description here",
+  "description": "Library of charts for the DEFRA/Agrimetrics repository",
   "main": "public/js/main.js",
   "scripts": {
     "start": "http-server -p 8086 -c0",
@@ -12,10 +12,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git-repo-here"
+    "url": "ssh://git@bitbucket.org/GuyGriffiths/deframetrics.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "Guy Griffiths",
   "license": "ISC",
   "devDependencies": {
@@ -29,6 +28,7 @@
     },
     "dependencies": {
       "css": "github:systemjs/plugin-css@^0.1.32",
+      "d3": "npm:d3@^4.9.1"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",

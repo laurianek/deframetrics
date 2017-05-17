@@ -1,0 +1,5 @@
+.pie-slice {
+    stroke: black;
+    stroke-width: 1px;
+    stroke-linecap: rounded;
+}
