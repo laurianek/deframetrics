@@ -1,26 +1,28 @@
 import * as d3 from 'd3'
-import '../css/pie-chart.css!'
+import '../css/strip-plot.css!'
 
-export default class PieChart {
+export default class StripPlot {
     constructor(divId) {
-        // Could pass this in?
+        // Large margin at the top for the tooltip
+        // Large margin at the bottom for the axis
         this.margin = {
-            top: 5,
-            right: 5,
-            bottom: 5,
-            left: 5
+            top: 80,
+            right: 10,
+            bottom: 50,
+            left: 10
         }
 
         this.svg = d3.select(`#${divId}`)
             .append('svg')
-            .attr('id', `${divId}-pie`)
+            .attr('id', `${divId}-strip`)
             .attr('width', '100%')
             .attr('height', '100%')
-        this.legend = d3.select(`#${divId}`)
+
+        this.tooltip = d3.select(`#${divId}`)
             .append('div')
-            .attr('id', `${divId}-legend`)
-            .attr('class', 'pie-legend')
+            .attr('class', 'strip-tooltip')
             .style('position', 'absolute')
+            .style('opacity', 0)
 
         window.addEventListener('resize', () => {
             this._sizeArea()
@@ -30,7 +32,7 @@ export default class PieChart {
 
         let defs = this.svg.append('defs')
         this.clipPath = defs.append('svg:clipPath')
-            .attr('id', `${divId}-pie-clip`)
+            .attr('id', `${divId}-strip-clip`)
             .append('svg:rect')
 
         // Initialise
@@ -38,86 +40,67 @@ export default class PieChart {
             .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
 
         // Group to draw areas in (aggregations)
-        this.pieArea = this.graphArea
+        this.stripArea = this.graphArea
             .append('g')
-            .attr('clip-path', `url(#${this.svgId}-clip)`)
-        this.textArea = this.graphArea
+            // .attr('clip-path', `url(#${divId}-strip-clip)`)
+        this.axisArea = this.graphArea
             .append('g')
-            .attr('clip-path', `url(#${this.svgId}-clip)`)
 
-        this.sliceHoverListeners = []
-        this.sliceEndHoverListeners = []
+        this.lineHoverListeners = []
+        this.lineEndHoverListeners = []
+
+        this.x = d3.scaleLinear()
+        // Region of interest - the strip to highlight
+        this.roi = undefined
 
         this._selfHovers()
         this._sizeArea()
     }
 
-    setData(data) {
+    setData(data, roi) {
+        this.roi = roi
         this.data = data
 
-        this.legend
-            .selectAll('*')
-            .remove()
-        let table = this.legend
-            .append('table')
-        this.data.map(d => {
-            let row = table.append('tr')
-            row.append('td')
-                .attr('class', 'pie-legend-box')
-                .style('background', d.color)
-            row.append('td')
-                .attr('class', 'pie-legend-box pie-text')
-                .text(d.category)
-
+        // Move the ROI to the end of the list so it doesn't get drawn over
+        let roiIndex = this.data.length
+        this.data.map((d, i) => {
+            if (this.roi == d.parish) {
+                roiIndex = i
+            }
         })
+        let roiData = this.data[roiIndex]
+        this.data.splice(roiIndex, 1)
+        this.data.push(roiData)
+
+        let dataExtent = d3.extent(this.data, d => d.value)
+        let margin = (dataExtent[1] - dataExtent[0]) * 0.05
+        this.x.domain([dataExtent[0] - margin, dataExtent[1] + margin])
 
         this._draw()
     }
 
-    addSliceHoverListener(l) {
-        this.sliceHoverListeners.push(l)
+    addParishHoverListener(l) {
+        this.lineHoverListeners.push(l)
     }
 
-    addSliceEndHoverListener(l) {
-        this.sliceEndHoverListeners.push(l)
+    addParishEndHoverListener(l) {
+        this.lineEndHoverListeners.push(l)
     }
 
     _selfHovers() {
-        this.labelText = this.textArea
-            .append('text')
-            .attr('class', 'pie-text')
-            .style('text-anchor', 'middle')
-            .style('alignment-baseline', 'central')
-            .text('')
-        this.percentageText = this.textArea
-            .append('text')
-            .attr('class', 'pie-text')
-            .style('text-anchor', 'middle')
-            .style('alignment-baseline', 'central')
-            .text('')
-        this.addSliceHoverListener(d => {
-            this.labelText
-                .text(`${d.category}`)
-                .style('font-color', 'black')
+        this.addParishHoverListener((d,x) => {
+            this.tooltip
+                .html(`<h1>${d.parish}</h1>${d.value}`)
+                .style('bottom', `${this.height+this.margin.bottom}px`)
+                .style('left', `${d3.event.offsetX - this.tooltip.node().clientWidth/2}px`)
                 .transition()
-                .duration(500)
-                .style('opacity', 1)
-            this.percentageText
-                .text(`${d.percentage}%`)
-                .style('font-color', 'black')
-                .transition()
-                .duration(500)
+                .duration(200)
                 .style('opacity', 1)
         })
-        this.addSliceEndHoverListener(() => {
-            this.labelText
-                .style('font-color', 'black')
+        this.addParishEndHoverListener(() => {
+            this.tooltip
                 .transition()
-                .duration(500)
-                .style('opacity', 0)
-            this.percentageText
-                .style('font-color', 'black')
-                .transition()
+                .delay(500)
                 .duration(500)
                 .style('opacity', 0)
         })
@@ -137,10 +120,12 @@ export default class PieChart {
             .attr('width', this.width)
             .attr('height', this.height)
 
-        this.textArea
-            .attr('transform', `translate(${this.width/2},${this.height/2})`)
-        this.pieArea
-            .attr('transform', `translate(${this.width/2},${this.height/2})`)
+        this.stripArea
+            .attr('transform', `translate(${this.margin.left},0)`)//${this.margin.top})`)
+        this.axisArea
+            .attr('transform', `translate(${this.margin.left},${this.margin.top+this.height})`)
+
+        this.x.range([0, this.width])
     }
 
     _draw(resize = false) {
@@ -148,67 +133,36 @@ export default class PieChart {
             return
         }
 
-        let pie = d3.pie()
-            .sort(null)
-            .value(d => d.percentage)
+        let stripSel = this.stripArea
+            .selectAll('rect')
+            .data(this.data)
 
-        // Calculate whether to use width or height as the basis for the radius
-        let rad = this.width > this.height ? this.height / 2 : this.width / 2
-        // Now scale it as much as desired
-        rad *= 0.9
-        let sf = 0.9
-        rad *= sf
-
-        this.innerRad = rad * 0.5
-
-        let arcGen = d3.arc().innerRadius(this.innerRad).outerRadius(rad)
-        let arcSel = this.pieArea.selectAll('path')
-            .data(pie(this.data))
-
-        arcSel
+        stripSel
             .enter()
-            .append('path')
-            .attr('d', d => arcGen
-                .outerRadius(d.data.active ? rad * 1.2 : rad)
-                .startAngle(d.startAngle)
-                .endAngle(d.endAngle)
-                ()
-            )
-            .attr('class', 'pie-slice')
-            .style('fill', d => d.data.color)
+            .append('rect')
+            .attr('class', d => d.parish === this.roi ? 'strip-line strip-highlight' : 'strip-line')
+            .attr('x', d => this.x(d.value) - 1)
+            .attr('y', 0)
+            .attr('width', 3)
+            .attr('height', this.height)
             .on('mouseover', d => {
-                d.data.active = true
-                this.sliceHoverListeners.map(l => l(d.data))
+                d.active = true
+                this.lineHoverListeners.map(l => l(d))
                 this._draw()
             })
             .on('mouseout', d => {
-                d.data.active = false
-                this.sliceEndHoverListeners.map(l => l(d.data))
+                d.active = false
+                this.lineEndHoverListeners.map(l => l(d))
                 this._draw()
             })
 
-        arcSel
-            .transition()
-            // Don't transition if this is a window resize
-            .duration(resize ? 0 : 500)
-            .attr('d', d => arcGen
-                .outerRadius(d.data.active ? rad / sf : rad)
-                .startAngle(d.startAngle)
-                .endAngle(d.endAngle)
-                ()
-            )
 
-        arcSel
-            .exit()
-            .remove()
-
-        // Placeholder - a bit shite.  Probably much better off in a legend
-        this.labelText
-            .attr('y', () => this.innerRad ? `-${this.innerRad*0.35}px` : '12px')
-            .style('font-size', () => this.innerRad ? `${this.innerRad*0.25}px` : '12px')
-
-        this.percentageText
-            .attr('y', () => this.innerRad ? `${this.innerRad*0.15}px` : '12px')
-            .style('font-size', () => this.innerRad ? `${this.innerRad*0.75}px` : '20px')
+        // this.labelText
+        //     .attr('y', () => this.innerRad ? `-${this.innerRad*0.35}px` : '12px')
+        //     .style('font-size', () => this.innerRad ? `${this.innerRad*0.25}px` : '12px')
+        //
+        // this.percentageText
+        //     .attr('y', () => this.innerRad ? `${this.innerRad*0.15}px` : '12px')
+        //     .style('font-size', () => this.innerRad ? `${this.innerRad*0.75}px` : '20px')
     }
 }

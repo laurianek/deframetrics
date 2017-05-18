@@ -14,6 +14,7 @@ html, body {
 #sidebar {
     flex-basis: 25%;
     background-color: pink;
+    overflow: auto;
 }
 
 #mainbody {
@@ -44,7 +45,7 @@ html, body {
     flex-direction: column;
 }
 
-#pie-chart {
+#strip-plot {
     flex-basis: 100%;
     position: relative;
 }

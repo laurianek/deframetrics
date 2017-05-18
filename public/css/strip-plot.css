@@ -1,0 +1,26 @@
+.strip-line {
+    stroke: none;
+    fill: black;
+    opacity: 0.2;
+}
+
+.strip-highlight {
+    stroke: royalblue;
+    fill: royalblue;
+    opacity: 1.0;
+    stroke-width: 2px;
+}
+
+.strip-tooltip h1 {
+    font-size: 12pt;
+    padding: 2px;
+    margin: 2px;
+}
+
+.strip-tooltip {
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+}

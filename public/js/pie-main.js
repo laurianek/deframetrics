@@ -3,8 +3,7 @@ import * as d3 from 'd3'
 import PieChart from './pie-chart'
 
 // Load some fake data
-let landcover = [
-    {
+let landcover = [{
         'category': 'Woodland',
         'color': '#66c2a5',
         'percentage': 45
@@ -38,9 +37,8 @@ pieChart.addSliceHoverListener(d => {
     d3.select('#info-pie')
         .text(`You are hovering over ${d.category}, which makes up ${d.percentage}% of the chart`)
 })
+// Wire up callbacks to just write information to the info panel
 pieChart.addSliceEndHoverListener(d => {
     d3.select('#info-pie')
         .text(`You are not hovering over the pie chart.  But you were hovering over ${d.category}`)
 })
-
-// Wire up callbacks to just write information to the info panel

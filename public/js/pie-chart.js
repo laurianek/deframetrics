@@ -40,10 +40,10 @@ export default class PieChart {
         // Group to draw areas in (aggregations)
         this.pieArea = this.graphArea
             .append('g')
-            .attr('clip-path', `url(#${this.svgId}-clip)`)
+            .attr('clip-path', `url(#${divId}-pie-clip)`)
         this.textArea = this.graphArea
             .append('g')
-            .attr('clip-path', `url(#${this.svgId}-clip)`)
+            .attr('clip-path', `url(#${divId}-pie-clip)`)
 
         this.sliceHoverListeners = []
         this.sliceEndHoverListeners = []
@@ -202,7 +202,6 @@ export default class PieChart {
             .exit()
             .remove()
 
-        // Placeholder - a bit shite.  Probably much better off in a legend
         this.labelText
             .attr('y', () => this.innerRad ? `-${this.innerRad*0.35}px` : '12px')
             .style('font-size', () => this.innerRad ? `${this.innerRad*0.25}px` : '12px')
