@@ -12,71 +12,12 @@
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans,Ubuntu" rel="stylesheet">
     <!-- We include this here, rather than through SystemJS since it all applies to the HTML-defined layout -->
     <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/layout.css">
     <title>Example Charts</title>
 </head>
 <body>
-    <!-- Main HTML body here -->
-    <div id="sidebar">
-        This is for reference, and can easily be modified once the final data model is decided upon.<br>
 
-        The data which populated this pie chart was:<br>
-        <pre><code>
-[
-    {
-        'category': 'Woodland',
-        'color': '#66c2a5',
-        'percentage': 45
-    },
-    {
-        'category': 'Farmland',
-        'color': '#a6d854',
-        'percentage': 25
-    },
-    {
-        'category': 'Scrubland',
-        'color': '#fc8d62',
-        'percentage': 15
-    },
-    {
-        'category': 'Water',
-        'color': '#8da0cb',
-        'percentage': 10
-    },
-    {
-        'category': 'Houses',
-        'color': '#e78ac3',
-        'percentage': 5
-    }
-]
-        </code></pre>
-    </div>
-    <div id="mainbody">
-        <div id="topbit">
-            This top bit is here to add space, so we can see what a graph will look like embedded within a <code>&lt;div&gt;</code> on a page, and make sure it handles resizing etc. properly.
-        </div>
-        <div id="mainbit">
-            <div id="graph-area">
-                <div id="pie-chart">
-                </div>
-            </div>
-            <div id="info-area">
-                <h4>Info Area</h4>
-                This is where callback info goes.  It is to illustrate the interactivity of the chart.  In a full application, it may do something more interesting than just write text.  This is how Laurieann can add custom behaviour which is beyond the scope of the visualisations.<br/><br/><br/>
-                <div id="info-pie"></div>
-            </div>
-        </div>
-        <div id="bottombit">
-            This is the bottom bit.  It has the same purpose as the top bit
-        </div>
-    </div>
-
-    <!-- Use the following code during development -->
-    <script src="./lib/system.js"></script>
-    <script src="./config.js"></script>
-    <script>
-        System.import('./js/main.js');
-    </script>
+    <h1><a href="pie.html">Pie Chart</a></br></h1>
+    <h1><a href="strip.html">Strip Plot</a></br></h1>
 </body>
 
 </html>
