@@ -1,5 +1,23 @@
 .pie-slice {
     stroke: black;
-    stroke-width: 1px;
+    stroke-width: 2px;
     stroke-linecap: rounded;
+}
+
+.pie-text {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.pie-legend {
+    bottom: 20px;
+    right: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+}
+
+.pie-legend-box {
+    width: 20px;
+    height: 20px;
 }

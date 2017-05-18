@@ -3,24 +3,30 @@ import '../css/pie-chart.css!'
 
 export default class PieChart {
     constructor(divId) {
-        this.svg = d3.select(`#${divId}`)
-            .append('svg')
-            .attr('id', `${divId}-pie`)
-            .attr('width', '100%')
-            .attr('height', '100%')
-
-        window.addEventListener('resize', () => {
-            this._sizeArea()
-            this._draw(true)
-        })
-
-        // Could pass this in
+        // Could pass this in?
         this.margin = {
             top: 5,
             right: 5,
             bottom: 5,
             left: 5
         }
+
+        this.svg = d3.select(`#${divId}`)
+            .append('svg')
+            .attr('id', `${divId}-pie`)
+            .attr('width', '100%')
+            .attr('height', '100%')
+        this.legend = d3.select(`#${divId}`)
+            .append('div')
+            .attr('id', `${divId}-legend`)
+            .attr('class', 'pie-legend')
+            .style('position', 'absolute')
+
+        window.addEventListener('resize', () => {
+            this._sizeArea()
+            this._draw(true)
+        })
+
 
         let defs = this.svg.append('defs')
         this.clipPath = defs.append('svg:clipPath')
@@ -42,11 +48,29 @@ export default class PieChart {
         this.sliceHoverListeners = []
         this.sliceEndHoverListeners = []
 
+        this._selfHovers()
         this._sizeArea()
     }
 
     setData(data) {
         this.data = data
+
+        this.legend
+            .selectAll('*')
+            .remove()
+        let table = this.legend
+            .append('table')
+        this.data.map(d => {
+            let row = table.append('tr')
+            row.append('td')
+                .attr('class', 'pie-legend-box')
+                .style('background', d.color)
+            row.append('td')
+                .attr('class', 'pie-legend-box pie-text')
+                .text(d.category)
+
+        })
+
         this._draw()
     }
 
@@ -56,6 +80,47 @@ export default class PieChart {
 
     addSliceEndHoverListener(l) {
         this.sliceEndHoverListeners.push(l)
+    }
+
+    _selfHovers() {
+        this.labelText = this.textArea
+            .append('text')
+            .attr('class', 'pie-text')
+            .style('text-anchor', 'middle')
+            .style('alignment-baseline', 'central')
+            .text('')
+        this.percentageText = this.textArea
+            .append('text')
+            .attr('class', 'pie-text')
+            .style('text-anchor', 'middle')
+            .style('alignment-baseline', 'central')
+            .text('')
+        this.addSliceHoverListener(d => {
+            this.labelText
+                .text(`${d.category}`)
+                .style('font-color', 'black')
+                .transition()
+                .duration(500)
+                .style('opacity', 1)
+            this.percentageText
+                .text(`${d.percentage}%`)
+                .style('font-color', 'black')
+                .transition()
+                .duration(500)
+                .style('opacity', 1)
+        })
+        this.addSliceEndHoverListener(() => {
+            this.labelText
+                .style('font-color', 'black')
+                .transition()
+                .duration(500)
+                .style('opacity', 0)
+            this.percentageText
+                .style('font-color', 'black')
+                .transition()
+                .duration(500)
+                .style('opacity', 0)
+        })
     }
 
     _sizeArea() {
@@ -94,7 +159,9 @@ export default class PieChart {
         let sf = 0.9
         rad *= sf
 
-        let arcGen = d3.arc().innerRadius(0).outerRadius(rad)
+        this.innerRad = rad * 0.5
+
+        let arcGen = d3.arc().innerRadius(this.innerRad).outerRadius(rad)
         let arcSel = this.pieArea.selectAll('path')
             .data(pie(this.data))
 
@@ -136,45 +203,12 @@ export default class PieChart {
             .remove()
 
         // Placeholder - a bit shite.  Probably much better off in a legend
-        let textSel = this.textArea.selectAll('text')
-            .data(pie(this.data))
+        this.labelText
+            .attr('y', () => this.innerRad ? `-${this.innerRad*0.35}px` : '12px')
+            .style('font-size', () => this.innerRad ? `${this.innerRad*0.25}px` : '12px')
 
-        textSel
-            .enter()
-            .append('text')
-            .attr('x', d => {
-                return arcGen
-                    .outerRadius(d.data.active ? rad / sf : rad)
-                    .startAngle(d.startAngle)
-                    .endAngle(d.endAngle)
-                    .centroid()[0]
-            })
-            .attr('y', d => {
-                return arcGen
-                    .outerRadius(d.data.active ? rad / sf : rad)
-                    .startAngle(d.startAngle)
-                    .endAngle(d.endAngle)
-                    .centroid()[1]
-            })
-            .text(d => d.data.percentage)
-
-        textSel
-            .transition()
-            // Don't transition if this is a window resize
-            .duration(resize ? 0 : 500)
-            .attr('x', d => {
-                return arcGen
-                    .outerRadius(d.data.active ? rad / sf : rad)
-                    .startAngle(d.startAngle)
-                    .endAngle(d.endAngle)
-                    .centroid()[0]
-            })
-            .attr('y', d => {
-                return arcGen
-                    .outerRadius(d.data.active ? rad / sf : rad)
-                    .startAngle(d.startAngle)
-                    .endAngle(d.endAngle)
-                    .centroid()[1]
-            })
+        this.percentageText
+            .attr('y', () => this.innerRad ? `${this.innerRad*0.15}px` : '12px')
+            .style('font-size', () => this.innerRad ? `${this.innerRad*0.75}px` : '20px')
     }
 }
