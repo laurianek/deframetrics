@@ -5,7 +5,7 @@
   "main": "public/js/main.js",
   "scripts": {
     "start": "http-server -p 8086 -c0",
-    "postinstall": "cp public/base-config.js public/config.js && cp public/base-config.js public/config.js && jspm install --yes",
+    "postinstall": "cp public/base-config.js public/config.js && jspm install --yes",
     "bundle": "jspm bundle js/main public/js/main.bundle.js --inject --minify",
     "build": "jspm bundle-sfx js/main dist/bundle.min.js --skip-source-maps --minify",
     "clean": "rm -Rf dist/ public/js/main.bundle.js public/js/main.bundle.js.map public/config.js && jspm install --yes"
