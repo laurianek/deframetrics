@@ -6,27 +6,27 @@ import PieChart from './pie-chart'
 let landcover = [{
         'category': 'Woodland',
         'color': '#66c2a5',
-        'percentage': 45
+        'value': 45
     },
     {
         'category': 'Farmland',
         'color': '#a6d854',
-        'percentage': 25
+        'value': 25
     },
     {
         'category': 'Scrubland',
         'color': '#fc8d62',
-        'percentage': 15
+        'value': 15
     },
     {
         'category': 'Water',
         'color': '#8da0cb',
-        'percentage': 10
+        'value': 10
     },
     {
         'category': 'Houses',
         'color': '#e78ac3',
-        'percentage': 5
+        'value': 5
     }
 ]
 

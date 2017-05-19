@@ -52,6 +52,7 @@ export default class PieChart {
             .remove()
         let table = this.legend
             .append('table')
+        let total = d3.sum(this.data, d => d.value)
         this.data.map(d => {
             let row = table.append('tr')
             row.append('td')
@@ -60,7 +61,7 @@ export default class PieChart {
             row.append('td')
                 .attr('class', 'pie-legend-box pie-text')
                 .text(d.category)
-
+            d.percentage = 100 * d.value / total
         })
 
         this._draw()
@@ -88,6 +89,7 @@ export default class PieChart {
             .style('alignment-baseline', 'central')
             .text('')
         this.addSliceHoverListener(d => {
+            console.log(d)
             this.labelText
                 .text(`${d.category}`)
                 .style('font-color', 'black')
@@ -95,7 +97,7 @@ export default class PieChart {
                 .duration(500)
                 .style('opacity', 1)
             this.percentageText
-                .text(`${d.percentage}%`)
+                .text(`${d.percentage.toFixed(0)}%`)
                 .style('font-color', 'black')
                 .transition()
                 .duration(500)
@@ -137,7 +139,7 @@ export default class PieChart {
 
         let pie = d3.pie()
             .sort(null)
-            .value(d => d.percentage)
+            .value(d => d.value)
 
         // Calculate whether to use width or height as the basis for the radius
         let rad = this.width > this.height ? this.height / 2 : this.width / 2
