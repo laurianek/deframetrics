@@ -27,12 +27,6 @@ export default class PieChart {
             this._draw(true)
         })
 
-
-        let defs = this.svg.append('defs')
-        this.clipPath = defs.append('svg:clipPath')
-            .attr('id', `${divId}-pie-clip`)
-            .append('svg:rect')
-
         // Initialise
         this.graphArea = this.svg.append('g')
             .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
@@ -40,10 +34,8 @@ export default class PieChart {
         // Group to draw areas in (aggregations)
         this.pieArea = this.graphArea
             .append('g')
-            .attr('clip-path', `url(#${divId}-pie-clip)`)
         this.textArea = this.graphArea
             .append('g')
-            .attr('clip-path', `url(#${divId}-pie-clip)`)
 
         this.sliceHoverListeners = []
         this.sliceEndHoverListeners = []
@@ -131,11 +123,6 @@ export default class PieChart {
         this.height = this.svg.node().getBoundingClientRect().height -
             this.margin.top -
             this.margin.bottom
-
-        this.clipPath.attr('x', 0)
-            .attr('y', 0)
-            .attr('width', this.width)
-            .attr('height', this.height)
 
         this.textArea
             .attr('transform', `translate(${this.width/2},${this.height/2})`)
