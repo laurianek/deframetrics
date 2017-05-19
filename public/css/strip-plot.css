@@ -1,12 +1,18 @@
 .strip-line {
     stroke: none;
-    fill: black;
+    fill: #333333;
     opacity: 0.2;
 }
 
+.strip-hover {
+    stroke: rgb(0,97,160);
+    stroke-width: 1px;
+    opacity: 0.5;
+}
+
 .strip-highlight {
-    stroke: royalblue;
-    fill: royalblue;
+    stroke: rgb(0,97,160);
+    fill: rgb(100,157,197);
     opacity: 1.0;
     stroke-width: 2px;
 }
@@ -18,9 +24,30 @@
 }
 
 .strip-tooltip {
+    font-family: 'Fira Sans', sans-serif;
     text-align: center;
     border: 2px solid black;
     border-radius: 5px;
     padding: 5px;
     background-color: white;
 }
+
+.strip-axis-text{
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+}
+
+/* This adds a small triangle to the tooltip.
+   Needs tweaking + I'm not 100% convinced it'll work across browsers */
+/*.strip-tooltip:after {
+  box-sizing: border-box;
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: black;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+  padding: 5px 15px 0 0;
+}*/

@@ -84,3 +84,15 @@ stripPlot.addParishEndHoverListener(d => {
     d3.select('#info-strip')
         .text(`You are not hovering over the strip plot.  But the last parish your mouse touched was ${d.parish}`)
 })
+
+// Do it all again, but with an axis this time
+let stripPlotAxis = new StripPlot('strip-plot2', true)
+stripPlotAxis.setData(parishes, 'Compton')
+stripPlotAxis.addParishHoverListener(d => {
+    d3.select('#info-strip2')
+        .text(`You are hovering over ${d.parish}, which has a population of ${d.value}`)
+})
+stripPlotAxis.addParishEndHoverListener(d => {
+    d3.select('#info-strip2')
+        .text(`You are not hovering over the strip plot.  But the last parish your mouse touched was ${d.parish}`)
+})
