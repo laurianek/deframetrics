@@ -22,7 +22,7 @@
   },
   "peerDependencies": {
     "jspm": "^0.16.48"
-  }
+  },
   "jspm": {
     "directories": {
       "baseURL": "public",
