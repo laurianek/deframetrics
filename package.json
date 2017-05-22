@@ -18,9 +18,11 @@
   "author": "Guy Griffiths",
   "license": "ISC",
   "devDependencies": {
-    "http-server": "^0.9.0",
-    "jspm": "^0.16.48"
+    "http-server": "^0.9.0"
   },
+  "peerDependencies": {
+    "jspm": "^0.16.48"
+  }
   "jspm": {
     "directories": {
       "baseURL": "public",
